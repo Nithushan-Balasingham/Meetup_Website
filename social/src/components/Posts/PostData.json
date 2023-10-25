@@ -1,0 +1,84 @@
+[
+    {
+        "id": 1,
+        "eventImage": "https://www.cyberpunk.net/build/images/social-thumbnail-en-ddcf4d23.jpg",
+        "eventName": "Event 1",
+        "eventDescription": "Description for Event 1",
+        "peopleGoing": 100,
+        "status": "Free"
+    },
+    {
+        "id": 2,
+        "eventImage": "https://www.cyberpunk.net/build/images/social-thumbnail-en-ddcf4d23.jpg",
+        "eventName": "Event 2",
+        "eventDescription": "Description for Event 2",
+        "peopleGoing": 150,
+        "status": "Paid"
+    },
+    {
+        "id": 3,
+        "eventImage": "https://www.cyberpunk.net/build/images/social-thumbnail-en-ddcf4d23.jpg",
+        "eventName": "Event 3",
+        "eventDescription": "Description for Event 3",
+        "peopleGoing": 80,
+        "status": "Free"
+    },
+        {
+            "id": 4,
+            "eventImage": "https://www.cyberpunk.net/build/images/social-thumbnail-en-ddcf4d23.jpg",
+            "eventName": "Event 4",
+            "eventDescription": "Description for Event 4",
+            "peopleGoing": 200,
+            "status": "Paid"
+        },
+        {
+            "id": 5,
+            "eventImage": "https://www.cyberpunk.net/build/images/social-thumbnail-en-ddcf4d23.jpg",
+            "eventName": "Event 5",
+            "eventDescription": "Description for Event 5",
+            "peopleGoing": 120,
+            "status": "Free"
+        },
+        {
+            "id": 6,
+            "eventImage": "https://www.cyberpunk.net/build/images/social-thumbnail-en-ddcf4d23.jpg",
+            "eventName": "Event 6",
+            "eventDescription": "Description for Event 6",
+            "peopleGoing": 90,
+            "status": "Paid"
+        },
+        {
+            "id": 7,
+            "eventImage": "https://www.cyberpunk.net/build/images/social-thumbnail-en-ddcf4d23.jpg",
+            "eventName": "Event 7",
+            "eventDescription": "Description for Event 7",
+            "peopleGoing": 180,
+            "status": "Free"
+        },
+        {
+            "id": 8,
+            "eventImage": "https://www.cyberpunk.net/build/images/social-thumbnail-en-ddcf4d23.jpg",
+            "eventName": "Event 8",
+            "eventDescription": "Description for Event 8",
+            "peopleGoing": 250,
+            "status": "Paid"
+        },
+        {
+            "id": 9,
+            "eventImage": "https://www.cyberpunk.net/build/images/social-thumbnail-en-ddcf4d23.jpg",
+            "eventName": "Event 9",
+            "eventDescription": "Description for Event 9",
+            "peopleGoing": 150,
+            "status": "Free"
+        },
+        {
+            "id": 10,
+            "eventImage": "https://www.cyberpunk.net/build/images/social-thumbnail-en-ddcf4d23.jpg",
+            "eventName": "Event 10",
+            "eventDescription": "Description for Event 10",
+            "peopleGoing": 300,
+            "status": "Paid"
+        }
+    
+    
+]
