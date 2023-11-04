@@ -40,7 +40,7 @@ const Posts = () => {
                 onClick={() => handlePostClick(post)}
               >
                 <div>
-                  <img src={post.eventImage} alt='' className='w-72 h-56 rounded-xl p-2' />
+                  <img src={post.eventImage} alt='' className='w-72 h-56 rounded-xl p-2 cursor-pointer' />
                 </div>
                 <div className='text-teal-400 font-bold'>{post.eventName}</div>
                 <div>{post.eventDescription}</div>
