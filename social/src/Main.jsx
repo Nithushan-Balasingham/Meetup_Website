@@ -6,7 +6,7 @@ import Posts from "./components/Posts/Posts";
 
 const Main = () => {
   return (
-    <div className="App">
+    <div className="App ">
     <Navbar/>
     <Home/>
     <Posts/>

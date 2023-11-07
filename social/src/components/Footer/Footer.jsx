@@ -33,9 +33,9 @@ export default function Footer() {
       setSubject(e.target.value);
     };
   return (
-    <div className='flex  flex-col items-center justify-center mt-12 h-full'>
-    <h2 className="text-3xl tracking-widest uppercase py-4 text-green-400 font-bold m-4">Contact Me</h2>
-      <div className=" rounded-xl h-full relative flex items-center justify-center m-4 ">
+    <div className='flex  flex-col items-center justify-center h-full bg-slate-400'>
+    <h2 className="text-3xl tracking-widest uppercase py-4 text-green-400 font-bold m-2 ">Contact Us</h2>
+      <div className=" rounded-xl h-full relative flex items-center justify-center m-2 ">
         <div className="md:w-1/2  flex flex-col items-center justify-center rounded-xl ">
           <p className=" text-center  sm:text-base md:text-2xl text-cyan-400 font-bold w-full">          
            People use Meetup to meet new people, learn new things, find support, get out of their comfort zones, and pursue their passions, together. Membership is free.
