@@ -11,4 +11,4 @@ router.post('/logOut', logOut)
 router.route("/:id").put(updateUser).delete(validToken, deleteUser).get(validToken,getSingleUser)
 
 
-modules.exports = router
+module.exports = router
