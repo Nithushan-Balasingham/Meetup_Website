@@ -18,6 +18,10 @@ const postSchema = mongoose.Schema({
     type: String,
     required: [true, "Please Enter the Meeting Method"],
   },
+  image: {
+    type: String,
+    required: true,
+  },
   status: {
     type: String,
     enum: ['done', 'nope'],

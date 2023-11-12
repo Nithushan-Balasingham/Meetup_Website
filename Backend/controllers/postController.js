@@ -5,7 +5,7 @@ const Post = require("../models/postModel")
 
 const addPost = asyncHandler(async (req, res) => {
       const {  name, description,meeting } = req.body;
-      if (! name || !description || !meeting) {
+      if (!name || !description || !meeting || !req.file) {
         res.status(400);
         return res.json({ error: "All fields are mandatory" });
   }
@@ -15,6 +15,7 @@ const addPost = asyncHandler(async (req, res) => {
         description,
         meeting,
         user_id: req.user.id,
+        image: req.file.filename,
       });
       res.status(200).json(post);
     } catch (err) {
@@ -51,29 +52,37 @@ const getSinglePost = asyncHandler(async (req, res) => {
 
 
 
-const updatePost= asyncHandler(async(req,res)=>{
-   const id = req.params.id;
+const updatePost = asyncHandler(async (req, res) => {
+  const id = req.params.id;
 
-   if (id.match(/^[0-9a-fA-F]{24}$/)) {
-  
-  const post = await Post.findById(id);
-  if (!post) {
-    res.status(404);
-    throw new Error("Not found");
-  }
-  if(post.user_id.toString() !== req.user.id){
-    res.status(403);
-    throw new Error("User dont have access")
-  }
-  const updatedPost = await Post.findByIdAndUpdate(
-    req.params.id,
-    req.body,
-    {new:true}
-  )
-  res.status(200).json(updatedPost)
+  if (id.match(/^[0-9a-fA-F]{24}$/)) {
+    try {
+      const post = await Post.findById(id);
+      if (!post) {
+        res.status(404);
+        throw new Error("Not found");
+      }
+      if (post.user_id.toString() !== req.user.id) {
+        res.status(403);
+        throw new Error("User don't have access");
+      }
 
-}
-})
+      if (req.file) {
+        post.image = req.file.filename;
+      }
+
+      post.name = req.body.name || post.name;
+      post.description = req.body.description || post.description;
+      post.meeting = req.body.meeting || post.meeting;
+
+      const updatedPost = await post.save();
+      res.status(200).json(updatedPost);
+    } catch (err) {
+      console.error("Error:", err.message);
+      return res.status(500).json({ error: "Server Error" });
+    }
+  }
+});
 const deletePost= asyncHandler(async(req,res)=>{
   const id = req.params.id;
   if (id.match(/^[0-9a-fA-F]{24}$/)) {

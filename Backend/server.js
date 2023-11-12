@@ -1,21 +1,40 @@
-const express = require('express')
-const connectDB = require('./dBConfig/dbConfig')
-const dotenv = require('dotenv').config()
-const cors = require('cors')
+const express = require('express');
+const connectDB = require('./dBConfig/dbConfig');
+const dotenv = require('dotenv').config();
+const cors = require('cors');
+const multer = require('multer');
+const path = require('path');
 
-connectDB()
+connectDB();
 
-const app = express()
-const port = process.env.PORT || 5000
+const storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, 'uploads/');
+  },
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + path.extname(file.originalname)); 
+  },
+});
 
-app.use(express.json())
-app.use(express.urlencoded({extended:true}))
+const upload = multer({ storage: storage });
 
-app.use(cors())
+const app = express();
+const port = process.env.PORT || 5000;
 
-app.use("/api/users", require("./routes/userRoute"))
-app.use("/api/posts", require("./routes/postRoutes"))
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.listen(port,()=>{
-    console.log(`Server is running a ${port}`)
-})
+app.use(cors());
+
+app.use((req, res, next) => {
+  req.upload = upload;
+  next();
+});
+
+app.use("/api/users", require("./routes/userRoute"));
+app.use("/api/posts", require("./routes/postRoutes"));
+app.use('/uploads', express.static('./uploads'));
+
+app.listen(port, () => {
+  console.log(`Server is running at ${port}`);
+});
