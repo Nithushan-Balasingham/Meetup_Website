@@ -22,7 +22,7 @@ router.route('/addPost').post(validateToken, (req, res) => {
     });
   })
   .delete(validateToken, deletePost)
-  .get(validateToken, getSinglePost);
+  .get( getSinglePost);
 
 
     
@@ -31,7 +31,7 @@ router.route('/disenroll/:id').patch(validateToken,disenrollPost)
 
 
 
-router.route("/").get(validateToken,getPosts)
+router.route("/").get(getPosts)
 
 
 

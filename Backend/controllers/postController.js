@@ -26,7 +26,7 @@ const addPost = asyncHandler(async (req, res) => {
 
   const getPosts = asyncHandler(async(req,res)=>{
     try {
-        const posts = await Post.find({user_id:req.user.id})
+        const posts = await Post.find()
         res.status(200).json(posts)
         console.log(posts)
     } catch (error) {
@@ -41,9 +41,9 @@ const getSinglePost = asyncHandler(async (req, res) => {
     if (!post) {
       return res.status(404).json({message:"Not Found"});
     }
-    if (post.user_id.toString() !== req.user.id) {
-      return res.status(403).json("Not Authorized");
-    }
+    // if (post.user_id.toString() !== req.user.id) {
+    //   return res.status(403).json("Not Authorized");
+    // }
     return res.status(200).json(post);
   } else {
     return res.status(404).json("Not Found");

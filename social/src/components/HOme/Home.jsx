@@ -25,7 +25,6 @@ const Home = () => {
           />
         </div>
         <p className='md:text-2xl text-xl font-bold text-gray-300'>Welcome to the Meet Up</p>
-        <button className='bg-[#00df9a] w-[200px] rounded-md font-medium my-6 py-3 text-black'>Get Started</button>
       </div>
     </div>
   );

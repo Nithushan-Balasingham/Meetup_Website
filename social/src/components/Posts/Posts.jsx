@@ -1,21 +1,47 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import PostData from './PostData.json';
 import Typed from 'react-typed';
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import axios from 'axios';
+import { useDispatch, useSelector } from "react-redux";
+import { getListFailure, getListSuccess } from "../../redux/post/postSlice";
 
 const Posts = () => {
-  const navigate = useNavigate();
   const [visiblePosts, setVisiblePosts] = useState(4);
+  const [org, setOrg] = useState([])
   const totalPosts = PostData.length;
+  const dispatch = useDispatch();
 
   const handleSeeMoreClick = () => {
     setVisiblePosts(visiblePosts + 3);
   };
 
-  const handlePostClick = (post) => {
-    localStorage.setItem('cardDetails', JSON.stringify(post));
-    navigate("/cardInfo")
+
+
+  const accessToken = useSelector((state) => state.user);
+  
+
+
+  const fetchAllCollection = () => {
+    const config = {
+      method: "GET",
+      url: "http://localhost:5001/api/posts",
+    };
+
+    axios(config)
+      .then((response) => {
+        setOrg(response.data)
+        dispatch(getListSuccess(response.data.data));
+      })
+      .catch((error) => {
+        dispatch(getListFailure(error.message));
+      });
   };
+
+  useEffect(() => {
+    fetchAllCollection();
+  },[]);
+
 
   return (
     <div className='h-full text-white flex flex-col items-center justify-center bg-slate-400 p-4'>
@@ -31,28 +57,22 @@ const Posts = () => {
           loop
         />
       </div>
-      <div>
-        <div className='grid md:grid-cols-4 sm:grid-cols-1 gap-4 '>
-          {PostData.slice(0, visiblePosts).map((post) => (
-            <div key={post.id}>
-              <div
+        <div className='grid md:grid-cols-4 sm:grid-cols-1 gap-4  w-11/12 h-11/12'>
+          {org.slice(0, visiblePosts).map((post) => (
+            <div key={post._id}>
+              <Link to={`/post/${post._id}`}><div
                 className='flex flex-col  items-center justify-center p-2 shadow-xl rounded-xl shadow-black'
-                onClick={() => handlePostClick(post)}
               >
                 <div>
-                  <img src={post.eventImage} alt='' className='w-72 h-56 rounded-xl p-2 cursor-pointer' />
+                <img src={`http://localhost:5001/uploads/${post.image}`} className='h-48 w-96' alt="Post Image" />
+
                 </div>
-                <div className='text-teal-400 font-bold'>{post.eventName}</div>
-                <div>{post.eventDescription}</div>
+                <div className='text-teal-400 font-bold'>{post.name}</div>
                 <div className='flex items-center justify-center'>
-                  <div className='m-2'>{post.peopleGoing}</div>
-                  <div
-                    className={post.status === 'Free' ? 'text-teal-400 font-bold' : 'text-rose-400 font-bold'}
-                  >
-                    {post.status}
-                  </div>
+                  {post.count == 0 ? ("No People Joined"):(<div className='m-2'>{post.count} people</div>)}
                 </div>
               </div>
+              </Link>
             </div>
           ))}
         </div>
@@ -67,7 +87,6 @@ const Posts = () => {
           </div>
         )}
       </div>
-    </div>
   );
 };
 
