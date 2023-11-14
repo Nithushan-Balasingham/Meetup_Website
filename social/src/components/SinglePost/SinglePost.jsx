@@ -12,12 +12,17 @@ const SinglePost = () => {
     const [status, setStatus] = useState('')
     const [description, setDescription] = useState('')
     const [meeting, setMeeting] = useState('')
+    const [meetingType, setMeetingType] = useState('')
     const [imgData, setImgData] = useState('')
     const [count, setCount] = useState('')
     const [postId, setPostId] = useState('')
+    const [userStates, setUserStates] = useState({}); // Assuming userStates is an object with user._id as keys
+    const [enrolledUsers, setEnrolledUsers] = useState([]);
+    const [userIds, setUserIds] = useState([]);
 
     const accessToken = useSelector((state) => state.user);
-    console.log("AS",accessToken.currentUser.accessToken)
+    console.log("AS",accessToken.currentUser.userId)
+    const userRefId = accessToken.currentUser.userId
 
     const handleEnroll = async () => {
     
@@ -73,21 +78,42 @@ const SinglePost = () => {
         }
       };
 
-    useEffect(()=>{
-            const getDatabyId = async()=>{
-                const {data}= await axios.get(`http://localhost:5001/api/posts/${id}`)
-                console.log(data)
-                setName(data.name)
-                setDescription(data.description)
-                setMeeting(data.meeting)
-                setStatus(data.status)
-                setImgData(data.image)
-                setCount(data.count)
-                setPostId(data._id)
+      useEffect(() => {
+        const getDatabyId = async () => {
+            try {
+                const { data } = await axios.get(`http://localhost:5001/api/posts/${id}`);
+                console.log(data.enrolledUsers);
+
+                // Update post-related state
+                setName(data.name);
+                setDescription(data.description);
+                setMeeting(data.meeting);
+                setMeetingType(data.meetingType);
+                setStatus(data.status);
+                setImgData(data.image);
+                setCount(data.count);
+                setPostId(data._id);
+
+                // Update state for each user in enrolledUsers
+                if (data.enrolledUsers && data.enrolledUsers.length > 0) {
+                  const updatedUserIds = data.enrolledUsers.map(user => {
+                      // Update state for each user's userId
+                      setUserIds(prevUserIds => [...prevUserIds, user.userId]);
+                      return user.userId;
+                  });
+
+                  // Optionally, if you want to update a single state for all userIds
+                  setUserIds(updatedUserIds);
+                    console.log('Updated enrolled users state:', updatedUserIds);
+                }
+            } catch (error) {
+                console.error("Error fetching data:", error);
             }
-    
-            getDatabyId()
-        },[id])
+        };
+
+        getDatabyId();
+    }, [id]);
+
 
   return (
             <div className='h-screen'>
@@ -135,13 +161,39 @@ const SinglePost = () => {
                      </div>)}
                 </div>
                 <div>
+                  <div className='border-2 m-4 p-1 rounded-xl bg-green-400 font-bold border-green-200'>
+                        Type : {meetingType}
+                    </div>
                     <div className='border-2 m-4 p-1 rounded-xl bg-green-400 font-bold border-green-200'>
-                        Joining : {meeting}
+                        Venue : {meeting}
                     </div>
                 </div>
                 <div>
-                    {count === 0 ? (
+                {userIds.includes(userRefId) ? (
                         <div className='bg-'>
+                           <button 
+                                className='bg-rose-400 text-base w-24 font-bold gilroy text-white p-3 rounded-lg hover:bg-rose-800 focus:bg-rose-400'
+                                onClick={() => {
+                                    Swal.fire({
+                                        title: 'Are you want disenroll?',
+                                        icon: 'warning',
+                                        showCancelButton: true,
+                                        confirmButtonColor: '#3085d6',
+                                        cancelButtonColor: '#d33',
+                                        confirmButtonText: 'Yes!'
+                                    }).then((result) => {
+                                        if (result.isConfirmed) {
+                                          handleDisenroll();
+                                        }
+                                    });
+                                    }}
+                            >
+                                
+                                Cancel
+                            </button>
+                        </div>
+                     ):( 
+                        <div>
                             <button 
                                 className='bg-[#6A82FF] text-lg font-bold gilroy text-white p-3 rounded-lg hover:bg-[#536CF0] focus:bg-[#3E51B4]'
                                 onClick={() => {
@@ -162,30 +214,7 @@ const SinglePost = () => {
                                 Enroll
                             </button>
                         </div>
-                    ):(
-                        <div>
-                            <button 
-                                className='bg-rose-400 text-base w-24 font-bold gilroy text-white p-3 rounded-lg hover:bg-rose-800 focus:bg-rose-400'
-                                onClick={() => {
-                                    Swal.fire({
-                                        title: 'Are you want disenroll?',
-                                        icon: 'warning',
-                                        showCancelButton: true,
-                                        confirmButtonColor: '#3085d6',
-                                        cancelButtonColor: '#d33',
-                                        confirmButtonText: 'Yes!'
-                                    }).then((result) => {
-                                        if (result.isConfirmed) {
-                                          handleDisenroll();
-                                        }
-                                    });
-                                    }}
-                            >
-                                
-                                Dis enroll
-                            </button>
-                        </div>
-                    )}
+                     )} 
                    
                 </div>
               </div>

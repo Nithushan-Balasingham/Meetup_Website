@@ -51,7 +51,7 @@ const Posts = () => {
         </p>
         <Typed
           className='md:text-4xl sm:text-2xl text-2xl font-bold md:pl-4 pl-2 text-[#00df9a]'
-          strings={['NOW', 'OR LATER']}
+          strings={['Nearby']}
           typeSpeed={120}
           backSpeed={140}
           loop

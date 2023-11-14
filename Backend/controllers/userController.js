@@ -4,7 +4,7 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 const register = asyncHandler (async(req,res)=>{
-    const {name, email, password} = req.body
+    const {name, email, country, password} = req.body
     if(!name || !email || !password){
         res.status(400)
         throw new Error("All fields are mandatory")
@@ -19,11 +19,12 @@ const register = asyncHandler (async(req,res)=>{
     const user = await User.create({
         name,
         email,
+        country,
         password:hashedPassword
     })
 
     if(user){
-        res.status(201).send({_id:user._id, email:user.email, name:user.name})
+        res.status(201).send({_id:user._id, email:user.email, name:user.name, country:user.country})
     }else{
         res.status(400)
         throw new Error("User Data is not valid")

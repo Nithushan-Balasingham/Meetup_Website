@@ -4,35 +4,62 @@ import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
 import {useNavigate} from 'react-router-dom'
+import CountryData from '../Login/CountryData.json'
+
 
 const NewPost = () => {
     const navigate = useNavigate()
-    const [formData, setFormData] = useState({ name: "", description: "", meeting: "", image: null });
-    const dispatch = useDispatch();
+    const [formData, setFormData] = useState({
+      name: "",
+      description: "",
+      meeting: "",
+      meetingType:"",
+      image: null,
+      date: "", 
+      time: "", 
+      country:""
+    });
+        const dispatch = useDispatch();
     const accessToken = useSelector((state) => state.user);
 
     const handleChange = (e) => {
-        if (e.target.type === 'file') {
-          setFormData({ ...formData, image: e.target.files[0] });
-        } else {
-          setFormData({ ...formData, [e.target.id]: e.target.value });
-        }
-      };
+      if (e.target.type === 'file') {
+        setFormData({ ...formData, image: e.target.files[0] });
+      } else {
+        const value = e.target.value === 'null' ? null : e.target.value;
+        setFormData({ ...formData, [e.target.id]: value });
+      }
+    };
+    
 
  const handleCreateCollection = (e) => {
     e.preventDefault();
-
-    // Check if any required field is empty
-    if (/^\s*$/.test(formData.name) || /^\s*$/.test(formData.description) || /^\s*$/.test(formData.meeting) || formData.image === null) {
-      toast.error("Empty Space Found");
+    if (
+      !formData.name.trim() ||
+      !formData.description.trim() ||
+      !formData.meeting.trim() ||
+      formData.image === null ||
+      formData.meetingType === "null" ||
+      formData.country === "null"
+ 
+    ) {
+      toast.error("Please fill in all fields and select a meeting type");
       return;
     }
+    
+  
 
     const postData = new FormData();
     postData.append('name', formData.name);
     postData.append('description', formData.description);
     postData.append('meeting', formData.meeting);
+    postData.append('date', formData.date);
+    postData.append('time', formData.time);
     postData.append('image', formData.image);
+    postData.append('meetingType', formData.meetingType);
+    postData.append('country', formData.country);
+
+
 
     dispatch(addListStart());
 
@@ -48,21 +75,32 @@ const NewPost = () => {
 
     axios(config)
       .then((response) => {
-        dispatch(addListSuccess(response.data));
-        toast.success("Successfully Created the Post", { position: "top-center" });
-        navigate('/')
+        if (response.status === 200) {
+          dispatch(addListSuccess(response.data));
+          toast.success("Successfully Created the Post", { position: "top-center" });
+          navigate("/");
+        } else {
+          console.log("error")
+          dispatch(addListFailure("Request failed with status: " + response.status));
+          toast.error("Error: " + response.status);
+        }
       })
       .catch((error) => {
         dispatch(addListFailure(error.message));
+        if (error.response && error.response.status === 400) {
+          toast.error("Bad Request: Please check your input and try again",{position:"top-center"});
+        } else {
+          toast.error("Error: " + error.message);
+        }      
       });
   };
 
   return (
-    <div className="flex flex-col items-center  h-screen w-screen p-8">
-        <h2 className="text-4xl text-teal-400 font-bold mb-8">Add Post</h2>
-      <form className='flex flex-col w-full  rounded-lg'  onSubmit={handleCreateCollection}>
+    <div className="flex flex-col items-center  min-h-screen w-screen p-4">
+        <h2 className="text-2xl text-teal-400 font-bold mb-3 border-8  rounded-2xl border-blue-400 p-2">Add Post</h2>
+      <form className='flex flex-col w-full  rounded-lg shadow-xl p-4 shadow-black'  onSubmit={handleCreateCollection}>
             <div className='flex flex-col '>
-                <label className='m- font-bold w-fit'>Ttile</label>
+                <label className='m- font-bold w-fit'>Title</label>
                 <input 
                     type='text'
                     id='name' 
@@ -73,7 +111,7 @@ const NewPost = () => {
                     required
                     />
             </div>
-            <div className='flex flex-col mt-5'>
+            <div className='flex flex-col mt-2'>
             <div className='flex justify-between'>
                 <label className=' font-bold w-fit'>Description</label>    
                 </div>                         
@@ -88,7 +126,47 @@ const NewPost = () => {
                     />
 
             </div>
-            <div className='flex flex-col mt-5'>
+            <div className='flex flex-col mt-2'>
+            <div className='flex justify-between'>
+                <label className=' font-bold w-fit'>Country</label>    
+                </div>                         
+                <select
+                  id='country'
+                  value={formData.country}
+                  onChange={handleChange}
+                  className='w-250 px-4 py-2 border rounded-lg text-teal-400'
+                  required
+                >
+                   <option value="null" disabled selected>
+                    Select Country
+                  </option>
+                  {CountryData.map((country, index) => (
+                    <option key={index} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </select>
+
+            </div>
+            <div className='flex flex-col mt-2'>
+            <div className='flex justify-between'>
+                <label className=' font-bold w-fit'>MeetingType</label>    
+                </div>                         
+                <select
+                  id='meetingType'
+                  value={formData.meetingType}
+                  onChange={handleChange}
+                  className='w-250 px-4 py-2 border rounded-lg text-teal-400'
+                  required
+                >
+                  <option value="null">Select meeting type</option>
+                  <option value='Online'>Online</option>
+                  <option value='Physical'>Physical</option>
+                </select>
+
+
+            </div>
+            <div className='flex flex-col mt-2'>
             <div className='flex justify-between'>
                 <label className=' font-bold w-fit'>Meeting</label>    
                 </div>                         
@@ -103,7 +181,37 @@ const NewPost = () => {
                     />
 
             </div>
-            <div className='flex flex-col mt-5'>
+            <div className="flex items-center">
+              <div className='flex flex-col mt-2'>
+              <div className='flex justify-between'>
+                  <label className=' font-bold w-fit'>Date</label>    
+                  </div>                         
+                  <input
+                    type='date'
+                    id='date'
+                    value={formData.date}
+                    onChange={handleChange}
+                    className='w-250 px-4 py-2 border rounded-lg text-teal-400 mr-2'
+                    required
+                  />
+
+              </div>
+              <div className='flex flex-col mt-2'>
+              <div className='flex justify-between'>
+                  <label className=' font-bold w-fit'>Time</label>    
+                  </div>                         
+                  <input
+                    type='time'
+                    id='time'
+                    value={formData.time}
+                    onChange={handleChange}
+                    className='w-250 px-4 py-2 border rounded-lg text-teal-400 ml-2'
+                    required
+                  />
+              </div>
+
+            </div>  
+            <div className='flex flex-col mt-2'>
                 <label className=' font-bold w-fit'>Image</label>
                 <input
                     type='file'
@@ -112,7 +220,7 @@ const NewPost = () => {
                     className='w-250 px-4 py-2 border rounded-lg text-teal-400'
                     required
                 />
-            </div>
+            </div>   
             <div className='flex items-center justify-center w-100 mt-4 flex-col'>
                 <button 
                 type="submit" 

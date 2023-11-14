@@ -9,6 +9,13 @@ const userSchema = mongoose.Schema({
         type:String,
         required:[true,"Please Enter the Email"]
     },
+    country:{
+        type:String,
+        required:[true,"Please Enter the Country"]
+    },
+    enroll:{
+        type:String,
+    },
     password:{
         type:String,
         required:[true,"Please Enter the Password"]

@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import meetup from './Meetup.png'
+import CountryData from './CountryData.json'
 import {
   signInStart,
   signInSuccess,
@@ -30,10 +31,11 @@ const Login = () => {
     const { id, value } = e.target;
     setFormData((prevData) => ({
       ...prevData,
-      [id]: value,
+      [id]: id === 'country' ? CountryData.find((country) => country === value) : value,
     }));
   };
   
+
 
   const handleLogin = async (e) => {
     e.preventDefault();
@@ -75,13 +77,19 @@ const Login = () => {
   const handleSignUp = async (e) => {
     e.preventDefault();
     try {
-      if (/^\s*$/.test(formData.name) || /^\s*$/.test(formData.email) || /^\s*$/.test(formData.password)) {
+      if (
+        /^\s*$/.test(formData.name) ||
+        /^\s*$/.test(formData.email) ||
+        /^\s*$/.test(formData.password) ||
+        !formData.country
+      ) {
         toast.error("Empty Space Found");
         return;
       }
       const registerData = {
         name:formData.name,
         email: formData.email,
+        country: formData.country, // Include the selected country data
         password: formData.password,
       };      
       dispatch(signInStart());
@@ -96,7 +104,7 @@ const Login = () => {
       };
 
       const response = await axios(config);
-      
+      console.log(response)
       toast.success("Registered Successfully", {position:"top-center"})
       setIsLogin(true);
       dispatch(signInSuccess(response.data));
@@ -141,6 +149,31 @@ const Login = () => {
                   className="bg-slate-100 p-3 rounded-lg ring-1 ring-gray-500 hover:placeholder:text-[#30387D] placeholder:italic"
                   onChange={handleChange}
                   />
+                  <div className="flex justify-between">
+                <label
+                  htmlFor="name"
+                  className="block text-sm text-[#30387D] poppins"
+                >
+                  Name
+                </label>
+                </div>
+                <select
+                  type="text"
+                  placeholder="Select Country"
+                  id="country"
+                  className="bg-slate-100 text-black p-3 rounded-lg ring-1 ring-gray-500 hover:placeholder:text-[#30387D] placeholder:italic"
+                  onChange={handleChange}
+                >
+                  <option value="" disabled selected>
+                    Select Country
+                  </option>
+                  {CountryData.map((country, index) => (
+                    <option key={index} value={country}>
+                      {country}
+                    </option>
+                  ))}
+                </select>
+
               </>
             )}
             <div className="flex justify-between">

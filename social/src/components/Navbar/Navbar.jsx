@@ -1,7 +1,7 @@
 import React from 'react';
-import { LogOut, User } from 'react-feather';
+import { LogOut, Plus, PlusCircle, User } from 'react-feather';
 import { FaSearch } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { signOut } from "../../redux/user/userSlice"
 import { useDispatch, useSelector } from 'react-redux';
 import { toast } from 'react-toastify';
@@ -29,16 +29,6 @@ const Navbar = () => {
     <div className='flex items-center justify-center h-20 w-full p-3 border-b bg-transparent border-blue-700 z-50  bg-gradient-to-r from-green-300 to-teal-400'>
       <div className='flex items-center justify-between w-full '>
       <div className='hidden md:block md:text-3xl xl:text-3xl  bg-gradient-to-r from-red-600 to-rose-300 text-transparent  font-mono bg-clip-text font-bold w-full'>Meeting Social</div>
-      <div className='flex items-center justify-center  lg:w-2/5 xl:w-4/5 w-48 relative md:relative '> 
-        <input
-          type='text'
-          placeholder='Search...'
-          className='border border-blue-800 px-2 py-1 rounded-xl text-black border-blue bg-transparent w-full z-10'
-          />
-        <div className='relative right-6 text-blue-400 cursor-pointer'>
-          <FaSearch />
-        </div>
-      </div>
       </div>
     
       <div className='w-full'>
@@ -48,8 +38,13 @@ const Navbar = () => {
         </div>
         ):(
           <div className='flex items-center justify-end w-full ' >
-            <div className='mr-8 text-slate-900 font-bold' style={{fontSize:"20px"}}>
-            {username}
+            <div className='flex mr-8 gap-2'> 
+              <div className=' text-slate-900 font-bold' style={{fontSize:"20px"}}>
+              {username}
+              </div>
+              <div title='Add New Post' className=''>
+                <Link to='/post'><PlusCircle className='text-blue-800' size={32}/></Link>
+              </div>
             </div>
             <div title='Logout'>
               <LogOut 

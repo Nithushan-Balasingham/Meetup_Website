@@ -14,10 +14,26 @@ const postSchema = mongoose.Schema({
     type: String,
     required: [true, "Please Enter the description"],
   },
-  meeting: {
+  meetingType: {
     type: String,
     required: [true, "Please Enter the Meeting Method"],
   },
+  meeting: {
+    type: String,
+    required: [true, "Please Enter the Meeting"],
+  },
+  date: {
+    type: Date,
+    required: true,
+  },
+  time: {
+    type: String, 
+    required: true,
+  },
+  country:{
+    type:String,
+    required:[true,"Please Enter the Country"]
+},
   image: {
     type: String,
     required: true,

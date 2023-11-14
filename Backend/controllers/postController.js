@@ -4,25 +4,35 @@ const Post = require("../models/postModel")
 
 
 const addPost = asyncHandler(async (req, res) => {
-      const {  name, description,meeting } = req.body;
-      if (!name || !description || !meeting || !req.file) {
-        res.status(400);
-        return res.json({ error: "All fields are mandatory" });
+  const { name, description, meeting, date, time, meetingType, country } = req.body;
+
+  if (!name || !description || !meeting || !req.file || !date || !time || !meetingType || !country) {
+    res.status(400);
+    return res.json({ error: "All fields are mandatory" });
   }
-    try {
-      const post = await Post.create({
-        name,
-        description,
-        meeting,
-        user_id: req.user.id,
-        image: req.file.filename,
-      });
-      res.status(200).json(post);
-    } catch (err) {
-      console.error("Error:", err.message);
-      return res.status(500).json({ error: "Server Error" });
-    }
-  });
+
+  try {
+    const dateTime = new Date(`${date}T${time}`);
+    
+    const post = await Post.create({
+      name,
+      description,
+      meeting,
+      meetingType,
+      user_id: req.user.id,
+      image: req.file.filename,
+      date: dateTime,
+      time: time, 
+      country
+    });
+
+    res.status(200).json(post);
+  } catch (err) {
+    console.error("Error:", err.message);
+    return res.status(500).json({ error: "Server Error" });
+  }
+});
+
 
   const getPosts = asyncHandler(async(req,res)=>{
     try {
@@ -74,6 +84,7 @@ const updatePost = asyncHandler(async (req, res) => {
       post.name = req.body.name || post.name;
       post.description = req.body.description || post.description;
       post.meeting = req.body.meeting || post.meeting;
+      post.country = req.body.country || post.country
 
       const updatedPost = await post.save();
       res.status(200).json(updatedPost);
@@ -118,6 +129,7 @@ const enrollPost = asyncHandler(async (req, res) => {
     post.enrolledUsers.push({
       userId: req.user.id,
       userName: req.user.name,
+      enroll:true
     });
     post.count += 1;
 
