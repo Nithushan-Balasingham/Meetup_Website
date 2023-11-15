@@ -1,13 +1,14 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { addListStart, addListFailure, addListSuccess } from "../../redux/post/postSlice";
 import { useDispatch, useSelector } from "react-redux";
 import axios from "axios";
 import { toast } from "react-toastify";
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, useParams} from 'react-router-dom'
 import CountryData from '../Login/CountryData.json'
 
 
-const NewPost = () => {
+const UpdatePost = () => {
+    const {id} = useParams()
     const navigate = useNavigate()
     const [formData, setFormData] = useState({
       name: "",
@@ -22,6 +23,30 @@ const NewPost = () => {
         const dispatch = useDispatch();
     const accessToken = useSelector((state) => state.user);
 
+    useEffect(() => {
+      // Fetch data from the API using the post ID
+      axios
+        .get(`http://localhost:5001/api/posts/${id}`)
+        .then((response) => {
+          const postData = response.data;
+          // Set the fetched data in the component state
+          setFormData({
+            name: postData.name,
+            description: postData.description,
+            meeting: postData.meeting,
+            meetingType: postData.meetingType,
+            date:new Date(postData.date).toISOString().slice(0, 10),
+            time: postData.time,
+            country: postData.country,
+            image: postData.image,
+          });
+        })
+        .catch((error) => {
+          console.error("Error fetching data:", error);
+          dispatch(addListFailure("Error fetching data"));
+          // You might want to handle the error, e.g., redirect or display an error message
+        });
+    }, [id, dispatch]);
     const handleChange = (e) => {
       console.log("Event:", e);
       
@@ -67,11 +92,10 @@ const NewPost = () => {
 
 
 
-    dispatch(addListStart());
 
     const config = {
-      method: "POST",
-      url: "http://localhost:5001/api/posts/addPost",
+      method: "PUT",
+      url: `http://localhost:5001/api/posts/${id}`,
       headers: {
         Authorization: `Bearer ${accessToken.currentUser.accessToken}`,
         "Content-Type": "multipart/form-data",
@@ -82,7 +106,6 @@ const NewPost = () => {
     axios(config)
       .then((response) => {
         if (response.status === 200) {
-          dispatch(addListSuccess(response.data));
           toast.success("Successfully Created the Post", { position: "top-center" });
           navigate("/");
         } else {
@@ -103,7 +126,7 @@ const NewPost = () => {
 
   return (
     <div className="flex flex-col items-center  min-h-screen w-screen p-4">
-        <h2 className="text-2xl text-teal-400 font-bold mb-2  rounded-2xl border-blue-400 p-2">Add Post</h2>
+        <h2 className="text-2xl text-teal-400 font-bold mb-2  rounded-2xl border-blue-400 p-2">Update Post</h2>
       <form className='flex flex-col w-full  rounded-lg shadow-xl p-4 shadow-black'  onSubmit={handleCreateCollection}>
             <div className='flex flex-col '>
                 <label className='m- font-bold w-fit'>Title</label>
@@ -112,7 +135,7 @@ const NewPost = () => {
                     id='name' 
                     placeholder='Enter your Text' 
                     className='w-250 px-4 py-2 border rounded-lg text-teal-400'
-                    value={formData.listname}
+                    value={formData.name}
                     onChange={handleChange}
                     required
                     />
@@ -245,4 +268,4 @@ const NewPost = () => {
   );
 };
 
-export default NewPost;
+export default UpdatePost;

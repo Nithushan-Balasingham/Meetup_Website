@@ -6,6 +6,7 @@ import { ToastContainer } from "react-toastify";
 import NewPost from './components/NewPost/NewPost';
 import SinglePost from './components/SinglePost/SinglePost';
 import PrivateRoute from './components/PrivateRoute';
+import UpdatePost from './components/Card/UpdatePost';
 
 
 function App() {
@@ -20,6 +21,7 @@ function App() {
             <Route path="/cardInfo" element={<CardInfo />} />
             <Route path='/post' element={<NewPost/>}/>
             <Route path='/post/:id' element={<SinglePost/>}/>
+            <Route path='/edit/:id' element={<UpdatePost/>}/>
           </Route>
 
         </Routes>

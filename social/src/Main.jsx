@@ -1,4 +1,3 @@
-import Card from "./components/Card/Card";
 import Footer from "./components/Footer/Footer";
 import Home from "./components/HOme/Home";
 import Navbar from "./components/Navbar/Navbar";
@@ -10,7 +9,6 @@ const Main = () => {
     <Navbar/>
     <Home/>
     <Posts/>
-    {/* <Card/> */}
     <Footer/>
   </div>
   )

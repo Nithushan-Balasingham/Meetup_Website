@@ -1,6 +1,8 @@
 const asyncHandler = require("express-async-handler")
 const Post = require("../models/postModel")
+const path = require('path');
 
+const fs = require('fs');
 
 
 const addPost = asyncHandler(async (req, res) => {
@@ -47,19 +49,23 @@ const addPost = asyncHandler(async (req, res) => {
 const getSinglePost = asyncHandler(async (req, res) => {
   const id = req.params.id;
   if (id.match(/^[0-9a-fA-F]{24}$/)) {
-    const post = await Post.findById(id);
-    if (!post) {
-      return res.status(404).json({message:"Not Found"});
+    try {
+      const post = await Post.findById(id).populate('user_id', 'name');
+      if (!post) {
+        return res.status(404).json({ message: "Not Found" });
+      }
+      
+      const userName = post.user_id.name;
+
+      return res.status(200).json({ ...post.toJSON(), userName });
+    } catch (error) {
+      console.error("Error", error.message);
+      return res.status(500).json({ error: "Server Error" });
     }
-    // if (post.user_id.toString() !== req.user.id) {
-    //   return res.status(403).json("Not Authorized");
-    // }
-    return res.status(200).json(post);
   } else {
     return res.status(404).json("Not Found");
   }
 });
-
 
 
 const updatePost = asyncHandler(async (req, res) => {
@@ -94,22 +100,40 @@ const updatePost = asyncHandler(async (req, res) => {
     }
   }
 });
-const deletePost= asyncHandler(async(req,res)=>{
+const deletePost = asyncHandler(async (req, res) => {
   const id = req.params.id;
-  if (id.match(/^[0-9a-fA-F]{24}$/)) {
-    const post = await Post.findById(id);
-    if (!post) {
-      res.status(404);
-      throw new Error("Not found");
-    }
-    if(post.user_id.toString() !== req.user.id){
-      res.status(403);
-      throw new Error("User dont have access to delete")
-    }
-    await Post.deleteOne({ _id: id })
-    res.status(200).json(post)
-}})
 
+  if (id.match(/^[0-9a-fA-F]{24}$/)) {
+    try {
+      const post = await Post.findById(id);
+
+      if (!post) {
+        res.status(404);
+        throw new Error("Not found");
+      }
+
+      if (post.user_id.toString() !== req.user.id) {
+        res.status(403);
+        throw new Error("User don't have access to delete");
+      }
+
+      const imageFilename = post.image; // Get the filename
+
+      await Post.deleteOne({ _id: id });
+
+      // Clear the image from local storage
+      if (imageFilename) {
+        const imagePath = path.join(__dirname, '../uploads', imageFilename);
+        fs.unlinkSync(imagePath);
+      }
+
+      res.status(200).json(post);
+    } catch (err) {
+      console.error("Error:", err.message);
+      return res.status(500).json({ error: "Server Error" });
+    }
+  }
+});
 const enrollPost = asyncHandler(async (req, res) => {
   const postId = req.params.id;
 
