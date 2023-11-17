@@ -5,6 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
 import { getListFailure, getListSuccess } from "../../redux/post/postSlice";
+import { Map, MapPin } from 'react-feather';
 
 const Posts = () => {
   const [visiblePosts, setVisiblePosts] = useState(4);
@@ -19,6 +20,7 @@ const Posts = () => {
 
 
   const accessToken = useSelector((state) => state.user);
+  const ownCountry = accessToken?.currentUser?.userCountry;
   
 
 
@@ -58,8 +60,14 @@ const Posts = () => {
         />
       </div>
         <div className='grid md:grid-cols-4 sm:grid-cols-1 gap-4  w-11/12 h-11/12'>
-          {org.slice(0, visiblePosts).map((post) => (
-            <div key={post._id}>
+        {org
+          .sort((a, b) => {
+            if (a.country === ownCountry) return -1;
+            if (b.country === ownCountry) return 1;
+            return 0;
+          })
+          .slice(0, visiblePosts)
+          .map((post) => (            <div key={post._id} className='hover:scale-90 duration-150'>
               <Link to={`/post/${post._id}`}><div
                 className='flex flex-col  items-center justify-center p-2 shadow-xl rounded-xl shadow-black'
               >
@@ -68,6 +76,10 @@ const Posts = () => {
 
                 </div>
                 <div className='text-teal-400 font-bold'>{post.name}</div>
+                <div className='flex'>
+                  <MapPin color='lightgreen'/>
+                  {post.country}
+                </div>
                 <div className='flex items-center justify-center'>
                   {post.count == 0 ? ("No People Joined"):(<div className='m-2'>{post.count} people</div>)}
                 </div>

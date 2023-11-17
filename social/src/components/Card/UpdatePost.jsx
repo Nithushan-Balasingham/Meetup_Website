@@ -106,7 +106,7 @@ const UpdatePost = () => {
     axios(config)
       .then((response) => {
         if (response.status === 200) {
-          toast.success("Successfully Created the Post", { position: "top-center" });
+          toast.success("Successfully Updated the Post", { position: "top-center" });
           navigate("/");
         } else {
           console.log("error")
@@ -206,7 +206,7 @@ const UpdatePost = () => {
                     onChange={handleChange}
                     placeholder='Enter your meeting' 
                     className='w-250 px-4 py-2 border rounded-lg text-teal-400'
-                    required
+                    
                     />
 
             </div>
@@ -247,7 +247,7 @@ const UpdatePost = () => {
                     id='image'
                     onChange={handleChange}
                     className='w-250 px-4 py-2 border rounded-lg text-teal-400'
-                    required
+                    
                 />
             </div>   
             <div className='flex items-center justify-center w-100 mt-4 flex-col'>

@@ -48,7 +48,7 @@ const login = asyncHandler(async(req,res)=>{
                 },
                 process.env.ACCESS_TOKEN_SECRET,{expiresIn:"50m"}
             )
-            res.status(200).json({accessToken, userName:user.name, userEmail:email, userId:user.id})
+            res.status(200).json({accessToken, userName:user.name, userEmail:email, userId:user.id, userCountry:user.country})
         }else{
             res.status(401).json({message:"Incorrect email or password"})
         }

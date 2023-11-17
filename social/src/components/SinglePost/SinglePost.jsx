@@ -24,7 +24,11 @@ const SinglePost = () => {
   const [time, setTime] = useState('');
   const [date, setDate] = useState(null);
   const navigate = useNavigate()
+  const [tooltipVisible, setTooltipVisible] = useState(false);
 
+  const handleMapClick = () => {
+    setTooltipVisible(!tooltipVisible);
+  };
   const accessToken = useSelector((state) => state.user);
   const userRefId = accessToken.currentUser.userId;
 
@@ -145,7 +149,7 @@ const SinglePost = () => {
   }
 
   return (
-    <div className='min-h-screen bg-gray-100'>
+    <div className='min-h-screen bg-gray-100 '>
       <div className='flex items-center justify-between'>
         <Link to='/' className='text-red-400 hover:text-red-600 cursor-pointer'>
           <ArrowLeftCircle className='m-2' />
@@ -189,11 +193,11 @@ const SinglePost = () => {
         <div className='flex flex-col items-center  justify-center'  >
         <div className='text-teal-800 font-bold text-3xl font-mono flex items-center justify-center' >{name} </div>
         <p className='text-rose-400 font-thin text-2xl'>Created By {userName}</p>
-        <p className='flex mt-1 text-cyan-400'><MapPin /> : {country}</p>
-          <img src={`http://localhost:5001/uploads/${imgData}`} className='h-[350px] w-[450px] object-contain relative -top-5' alt=" " />
+        <p className='flex m-3 text-cyan-400'><MapPin /> : {country}</p>
+          <img src={`http://localhost:5001/uploads/${imgData}`} className='h-[350px] w-[450px]' alt=" " />
         </div>
         <div className=' flex justify-center items-center'>
-            <div className='flex relative -top-14 w-fit  justify-center  text-blue-600 border-2 m-2 border-blue-400 rounded-2xl'>
+            <div className='flex  w-fit  justify-center  text-blue-600 border-2 m-2 border-blue-400 rounded-2xl'>
               {count === 0 ? (
                 <div className='flex gap-2 text-red-500 p-2'>
                   <XCircle className='text-red-500' />
@@ -211,7 +215,7 @@ const SinglePost = () => {
             </div>
             <div className=' '>
           {userIds.includes(userRefId) ? (
-            <div className='relative -top-14'>
+            <div className=''>
               <button
                 className='bg-rose-400 text-base w-24 font-bold text-white p-3 rounded-lg hover:bg-rose-800 focus:bg-rose-400'
                 onClick={() => {
@@ -233,7 +237,7 @@ const SinglePost = () => {
               </button>
             </div>
           ) : (
-            <div className='relative -top-14'>
+            <div>
               <button
                 className='bg-blue-500 w-32  font-bold text-white p-3 text-sm rounded-lg hover:bg-blue-700 focus:bg-blue-400'
                 onClick={() => {
@@ -257,7 +261,7 @@ const SinglePost = () => {
           )}
         </div>
             </div>
-        <div className='flex justify-center space-x-4 mb-2 relative -top-12'>
+        <div className='flex justify-center space-x-4 mb-2'>
           <button
             className={`font-bold text-lg ${activeTab === 'description' ? 'text-blue-500' : 'text-gray-500'}`}
             onClick={() => setActiveTab('description')}
@@ -272,7 +276,7 @@ const SinglePost = () => {
           </button>
         </div>
         {activeTab === 'description' && (
-          <div className='flex items-center justify-center relative -top-12'>
+          <div className='flex items-center justify-center'>
           <div className='text-green-400 font-bold w-10/12  text-center shadow-xl shadow-black p-4 rounded-lg bg-white'>
             <div className='text-xl text-blue-400 text-center border-b-2 pb-2'>
               Description
@@ -285,20 +289,26 @@ const SinglePost = () => {
           </div>
         )}
         {activeTab === 'details' && (
-         <div className='flex items-center justify-center relative -top-12'>
-            <div className='relative top-2'>
-              <div className='border-2 m-2 p-1 rounded-xl bg-green-400 font-bold border-green-200'>
+         <div className='flex items-center justify-center'>
+            <div className=''>
+              <div className='m-2 p-1 font-bold font-mono'>
                 Type : {meetingType}
               </div>
-              <div className='border-2 m-2 p-1 rounded-xl bg-blue-400 font-bold border-green-200 flex'>
-                <Map /> : {meeting}
+              <div className='relative m-2 p-1 font-bold font-mono flex'>
+                <Map onClick={handleMapClick} />
+                {tooltipVisible && (
+                  <div className='absolute top-full left-0 p-2 bg-white border border-gray-300 max-w-[200px]' style={{ overflowX: 'auto', whiteSpace: 'nowrap' }}>
+                    {meeting}
+                  </div>
+                )}
               </div>
+
             </div>
-            <div className='relative top-2 '>
-              <div className='border-2 m-2 p-1 rounded-xl bg-indigo-400 font-bold border-green-200 flex'>
+            <div>
+            <div className='m-2 p-1 font-bold font-mono flex'>
                 <Clock/>: {time}
               </div>
-              <div className='border-2 m-2 p-1 rounded-xl bg-rose-400 font-bold border-green-200 flex '>
+              <div className='m-2 p-1 font-bold font-mono flex'>
                 <Calendar/> :{date}
               </div>
             </div>

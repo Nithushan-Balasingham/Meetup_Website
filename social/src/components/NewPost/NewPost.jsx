@@ -94,7 +94,7 @@ const NewPost = () => {
       .catch((error) => {
         dispatch(addListFailure(error.message));
         if (error.response && error.response.status === 400) {
-          toast.error("Bad Request: Please check your input and try again",{position:"top-center"});
+          toast.error(" Please check your input and try again",{position:"top-center"});
         } else {
           toast.error("Error: " + error.message);
         }      
@@ -102,9 +102,11 @@ const NewPost = () => {
   };
 
   return (
-    <div className="flex flex-col items-center  min-h-screen w-screen p-4">
-        <h2 className="text-2xl text-teal-400 font-bold mb-2  rounded-2xl border-blue-400 p-2">Add Post</h2>
-      <form className='flex flex-col w-full  rounded-lg shadow-xl p-4 shadow-black'  onSubmit={handleCreateCollection}>
+    <div>
+      <h2 className="text-2xl text-teal-400 font-bold mb-6  rounded-2xl border-blue-400 p-2">Add Post</h2>
+
+    <div className="flex flex-col  items-center  min-h-screen p-4">
+      <form className='flex flex-col w-full  rounded-lg p-4'  onSubmit={handleCreateCollection}>
             <div className='flex flex-col '>
                 <label className='m- font-bold w-fit'>Title</label>
                 <input 
@@ -143,7 +145,7 @@ const NewPost = () => {
                   className='w-250 px-4 py-2 border rounded-lg text-teal-400'
                   required
                 >
-                   <option value="null" disabled selected>
+                <option value="" disabled defaultValue>
                     Select Country
                   </option>
                   {CountryData.map((country, index) => (
@@ -238,6 +240,7 @@ const NewPost = () => {
             </div>
 
             </form>
+            </div>
             </div>
        
     
