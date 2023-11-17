@@ -23,6 +23,7 @@ const port = process.env.PORT || 5000;
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+console.log('Before connectDB');
 
 app.use(cors({
   origin: '*',
@@ -31,6 +32,7 @@ app.use((req, res, next) => {
   req.upload = upload;
   next();
 });
+console.log('Before app.listen');
 
 app.use("/api/users", require("./routes/userRoute"));
 app.use("/api/posts", require("./routes/postRoutes"));
