@@ -255,7 +255,7 @@ const SinglePost = () => {
                   });
                 }}
               >
-                Enroll
+                Join
               </button>
             </div>
           )}
