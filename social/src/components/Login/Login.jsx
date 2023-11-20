@@ -122,9 +122,9 @@ const Login = () => {
 
   
   return (
-    <div className="flex justify-between items-center px-10 max-sm:pl-0 max-sm:px-1 max-sm:mx-3 pl-40 h-screen bg-slate-300">
-      <div className="flex flex-1 justify-center max-sm:hidden">
-       <img src={meetup} alt="" />
+    <div className="flex justify-between items-center px-10 max-sm:pl-0 max-sm:px-1 max-sm:mx-3 pl-40 h-screen">
+      <div className="flex flex-1 justify-center max-sm:hidden text-9xl font-mono font-bold text-purple-700" >
+        VoluNet
       </div>
       <div className="flex flex-1 justify-center items-center py-10 bg-white shadow-lg rounded-lg max-sm:mx-0 mx-28">
         <div className="w-full max-sm:px-6 px-16">
@@ -154,12 +154,12 @@ const Login = () => {
                   htmlFor="name"
                   className="block text-sm text-[#30387D] poppins"
                 >
-                  Name
+                  District
                 </label>
                 </div>
                 <select
                   type="text"
-                  placeholder="Select Country"
+                  placeholder="Select District"
                   id="country"
                   className="bg-slate-100 text-black p-3 rounded-lg ring-1 ring-gray-500 hover:placeholder:text-[#30387D] placeholder:italic"
                   onChange={handleChange}

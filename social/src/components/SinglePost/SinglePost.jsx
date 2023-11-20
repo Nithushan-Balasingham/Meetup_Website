@@ -149,7 +149,7 @@ const SinglePost = () => {
   }
 
   return (
-    <div className='min-h-screen bg-gray-100 '>
+    <div className='min-h-screen'>
       <div className='flex items-center justify-between'>
         <Link to='/' className='text-red-400 hover:text-red-600 cursor-pointer'>
           <ArrowLeftCircle className='m-2' />
@@ -272,15 +272,12 @@ const SinglePost = () => {
             className={`font-bold text-lg ${activeTab === 'details' ? 'text-blue-500' : 'text-gray-500'}`}
             onClick={() => setActiveTab('details')}
           >
-            Details
+            Info
           </button>
         </div>
         {activeTab === 'description' && (
           <div className='flex items-center justify-center'>
-          <div className='text-green-400 font-bold w-10/12  text-center shadow-xl shadow-black p-4 rounded-lg bg-white'>
-            <div className='text-xl text-blue-400 text-center border-b-2 pb-2'>
-              Description
-            </div>
+          <div className='text-green-400 font-bold w-10/12  text-center  p-4 rounded-lg bg-white'>
             <div className='mt-2'>
               {description}
             </div>

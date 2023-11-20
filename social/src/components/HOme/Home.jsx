@@ -5,8 +5,8 @@ import Navbar from '../Navbar/Navbar';
 
 const Home = () => {
   return (
-    <div className='relative text-white h-screen w-full' id='home'>
-<video src={videoBg} autoPlay loop muted className="absolute z-0 w-full h-full object-cover bg-black " />
+    <div className='relative  h-screen w-full' id='home'>
+<video src={videoBg} autoPlay loop muted className="absolute -z-10 w-full h-full object-cover  " />
       <div className='relative z-10 h-full mx-auto text-center flex flex-col items-center justify-center'>
         <p className='text-blue-400 font-mono font-bold p-2 md:text-3xl sm:text-2xl text-xl'>The people platform—Where interests become friendships</p>
         <div className='md:text-2xl sm:text-xl text-xl font-bold md:py-6 text-center w-2/3  '>

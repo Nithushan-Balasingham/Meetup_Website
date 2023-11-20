@@ -28,7 +28,7 @@ const Navbar = () => {
   return (
     <div className='flex items-center justify-center h-20 w-full p-3 border-b bg-transparent border-blue-700 z-50  bg-gradient-to-r from-green-300 to-teal-400'>
       <div className='flex items-center justify-between w-full '>
-      <div className='hidden md:block md:text-3xl xl:text-3xl  bg-gradient-to-r from-red-600 to-rose-300 text-transparent  font-mono bg-clip-text font-bold w-full'>Meeting Social</div>
+      <div className='hidden md:block md:text-3xl xl:text-3xl  bg-gradient-to-r from-red-600 to-rose-300 text-transparent  font-mono bg-clip-text font-bold w-full'>VoluNet</div>
       </div>
     
       <div className='w-full'>
