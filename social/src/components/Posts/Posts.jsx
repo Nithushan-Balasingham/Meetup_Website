@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react';
 import PostData from './PostData.json';
-import Typed from 'react-typed';
 import { Link, useNavigate } from "react-router-dom";
 import axios from 'axios';
 import { useDispatch, useSelector } from "react-redux";
@@ -49,15 +48,8 @@ const Posts = () => {
     <div className='h-full text-white flex flex-col items-center justify-center bg-slate-400 p-4'>
       <div className='flex justify-center items-center'>
         <p className='md:text-4xl sm:text-2xl text-2xl font-bold py-4 text-[#00df9a]'>
-          EVENTS
+          EVENTS NEARBY
         </p>
-        <Typed
-          className='md:text-4xl sm:text-2xl text-2xl font-bold md:pl-4 pl-2 text-[#00df9a]'
-          strings={['Nearby']}
-          typeSpeed={120}
-          backSpeed={140}
-          loop
-        />
       </div>
         <div className='grid md:grid-cols-4 sm:grid-cols-1 gap-4  w-11/12 h-11/12'>
         {org

@@ -1,6 +1,5 @@
 import React from 'react';
-import Typed from 'react-typed';
-import videoBg from '../../assets/video/videoBg.mp4';
+import videoBg from '../../assets/video/sri-lanka-4k-cinematic-travel-film2_ftmZwDIO~3.mp4';
 import Navbar from '../Navbar/Navbar';
 
 const Home = () => {
@@ -14,15 +13,8 @@ const Home = () => {
         </div>
         <div className='flex justify-center items-center'>
           <p className='md:text-2xl sm:text-xl text-xl font-bold py-4 text-green-300'>
-            JOIN
+            JOIN NOW OR LATER
           </p>
-          <Typed  
-            className='md:text-2xl sm:text-xl text-xl font-bold md:pl-4 pl-2 text-green-300'
-            strings={['NOW','OR LATER']} 
-            typeSpeed={120} 
-            backSpeed={140} 
-            loop
-          />
         </div>
         <p className='md:text-2xl text-xl font-bold text-gray-300'>Welcome to the Meet Up</p>
       </div>
