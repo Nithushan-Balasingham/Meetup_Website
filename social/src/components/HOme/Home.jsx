@@ -1,5 +1,5 @@
 import React from 'react';
-import videoBg from '../../assets/video/sri-lanka-4k-cinematic-travel-film2_ftmZwDIO~3.mp4';
+import videoBg from '../../assets/video/videoBg.mp4';
 import Navbar from '../Navbar/Navbar';
 
 const Home = () => {
